@@ -110,7 +110,6 @@ var glutenFree = function (desserts) {
 
   return _.map(desserts, function(dessert, glutenFree) {
     if (dessert.ingredients.includes('flour')) {
-      console.log('includes flour: ', dessert.ingredients.includes('flour'));
       dessert.glutenFree = false;
       return dessert;
     } else {
@@ -150,8 +149,22 @@ var allUserMessages = function(tweets) {
 */
 var applyCoupon = function (groceries, coupon) {
 
-
-
+  return _.map(groceries, function(grocery) {
+    // define variable for price
+    var price = Number((grocery.price.slice(1) * 100));
+     //console.log(price);
+    // define variable for discount
+    var discount = price * coupon;
+    //console.log(discount);
+    // define variable for final price
+    var finalPrice = Math.floor((price - discount)) / 100;
+    console.log(finalPrice);
+    // add final price key and value into object
+    grocery.salePrice = '$' + finalPrice;
+     //console.log(finalPrice);
+    // return object
+    return grocery;
+  });
 };
 
 /*
