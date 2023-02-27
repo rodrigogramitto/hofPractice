@@ -150,19 +150,10 @@ var allUserMessages = function(tweets) {
 var applyCoupon = function (groceries, coupon) {
 
   return _.map(groceries, function(grocery) {
-    // define variable for price
     var price = Number((grocery.price.slice(1) * 100));
-     //console.log(price);
-    // define variable for discount
     var discount = price * coupon;
-    //console.log(discount);
-    // define variable for final price
     var finalPrice = Math.floor((price - discount)) / 100;
-    console.log(finalPrice);
-    // add final price key and value into object
     grocery.salePrice = '$' + finalPrice;
-     //console.log(finalPrice);
-    // return object
     return grocery;
   });
 };
@@ -175,13 +166,23 @@ var applyCoupon = function (groceries, coupon) {
 
 // return the total price of all products.
 var sumTotal = function (products) {
-
+  return _.reduce(products, function(accumulator, product) {
+    accumulator += Number(product.price.slice(1));
+    return accumulator;
+  }, 0);
 };
 
 // return an object consisting of dessert types and how many of each.
 // exampleOutput: { dessertType: 3, dessertType2: 1 }
 var dessertCategories = function (desserts) {
-
+  return _.reduce(desserts, function(accumulator, dessert) {
+    if (accumulator[dessert.type] === undefined) {
+      accumulator[dessert.type] = 1;
+    } else {
+      accumulator[dessert.type] += 1;
+    }
+    return accumulator;
+  }, {});
 };
 
 // return an object with the proper count of all user messages
@@ -196,19 +197,36 @@ var dessertCategories = function (desserts) {
   }
 */
 var countMessagesPerUser = function(tweets) {
-
+  return _.reduce(tweets, function(accumulator, tweet) {
+    if (accumulator[tweet.user] === undefined) {
+      accumulator[tweet.user] = 1;
+    } else {
+      accumulator[tweet.user] += 1;
+    }
+    return accumulator;
+  }, {});
 };
 
 // given an array of movie data objects,return an array containing
 // movies that came out between 1990 and 2000.
 // TIP: use an array as your accumulator - don't push to an external array!
 var ninetiesKid = function (movies) {
-
+  return _.reduce(movies, function(accumulator, movie) {
+    if (movie.releaseYear >= 1990 && movie.releaseYear <= 2000) {
+      accumulator.push(movie.title);
+    }
+    return accumulator;
+  }, []);
 };
 
 // return an boolean stating if there exists a movie with a shorter
 // runtime than your time limit.
 // timeLimit is an integer representing a number of minutes.
 var movieNight = function (movies, timeLimit) {
-
+  return _.reduce(movies, function(accumulator, movie) {
+    if (movie.runtime <= timeLimit) {
+      accumulator = true;
+    }
+    return accumulator;
+  }, false);
 };
